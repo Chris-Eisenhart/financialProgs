@@ -1,0 +1,236 @@
+#!/usr/bin/env python2.7
+# endTrim REDO
+# Chris Eisenhart 12.04.2014
+# ceisenhart@soe.ucsc.edu/ceisenha@ucsc.edu
+"""
+This program acts as a fasta and fastq parser. 
+The user can supply either fasta or fastq files. 
+Both fastq 64 and 33 are accepted, but the type
+ must be specified at runtime. Additionally
+the user can provide quality files in conjuction with fasta
+files to create a fastq file. The program includes a basic end
+trimming function that is applied to fastq files and fasta 
+quality file pairs. Both the quality and dna sequence
+are ahve the end characters removed starting at the first low 
+quality base. The user can choose several outputs for the data.
+For fasta input files, the output can be in fasta format. 
+For fasta and qual input files or fastq files the output can 
+be; fastq 33 format, fastq 64 format, or fasta file and quality
+file. When using the alphabet option with the multiCases option
+ note that the lower case characters in the alphabet must be 
+included or they will be ignored and not converted to capital 
+characters.
+"""
+from __future__ import print_function  
+from itertools import izip
+import string, sys, operator, fileinput, collections, os.path
+import re, argparse, fastFunctions
+
+def warning(*objs):
+    print("WARNING: ", *objs, file=sys.stderr)
+
+def error(*objs):
+    print("ERROR: ", *objs, file=sys.stderr)
+    sys.exit()
+
+def parseArgs(args): 
+    """ 
+    INPUT:
+	args- A copy of the command line. 
+    OUTPUT:
+	options - A tuple containing all of the user provided
+		command line information.
+    Takes in the command line and parsers any options the 
+    user provided. If no options are provided for alphabet, 
+    verbose, min_qual, or multiCases then a default value is 
+    provided. 
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("--limitLineLength", 
+	help = " For fasta files only, the output sequences "
+		" will be limited to length 80. ",
+	action = "store_true")   
+    parser.add_argument ("--min_qual",
+	help = " The lowest quality value that can appear in" 
+		"the output, default is 30 (1/1000 error). "
+		"If you do not want to trim your files, "
+		" use --min_qual 0 ",
+	type = int,
+	action = "store" ) 
+    parser.add_argument ("--verbose", "-v",
+	help = " Print warning messages to standard error.",
+	action = "store_true")   
+    parser.add_argument ("--multiCases",
+	help = " Selecting this option removes multiple cases. "
+		"All characters will be printed as upper case"
+		" charactes.  ",
+	action = "store_false")   
+    parser.add_argument ("--alphabet", "-a",
+	help = " The accepted alphabet. Default is "
+		" all ascii letters and the character '*'",
+	action = "store")   
+
+    # Mutually exclusive ensures that both an input and 
+    # output are provided. 
+    MUInput=parser.add_mutually_exclusive_group(required=True)
+    MUOutput=parser.add_mutually_exclusive_group(required=True)
+    # Input Files
+    MUInput.add_argument ("--in_33",
+ 	help = " Input fastq file in Phred+33 coding", 
+	type =argparse.FileType('r') ) 
+    MUInput.add_argument ("--in_64",
+	help = " Input fastq file in Phred+64 coding", 
+	type =argparse.FileType('r') ) 
+    MUInput.add_argument ("--in_fasta", 
+	help = " Input file is in fasta format",  
+	type =argparse.FileType('r') ) 
+    parser.add_argument ("--in_qual",
+	help = " Input quality file",
+	type =argparse.FileType('r') ) 
+    # Output Files
+    MUOutput.add_argument ("--out_33",
+	help = "Output file in fastq Phred+33 coding",
+	type = argparse.FileType('w') ) 
+    MUOutput.add_argument ("--out_64",
+	help = "Output file in fastq Phred+64 coding", 
+	type = argparse.FileType('w') ) 
+    MUOutput.add_argument ("--out_fasta",
+	help = " Output file in fasta file", 
+	type = argparse.FileType('w') ) 
+    parser.add_argument ("--out_qual",
+	help = " Output quality file ",
+	type = argparse.FileType('w') ) 
+
+    parser.set_defaults (limitLineLength = False)
+    parser.set_defaults (min_qual = 30)
+    parser.set_defaults (verbose = False)
+    parser.set_defaults (alphabet = string.ascii_letters + "*")
+    parser.set_defaults (multiCases = True)
+    options = parser.parse_args() 
+    return options
+
+def endTrim(fastq, minValue):
+    """
+    INPUT:
+	fastq - A fastq object.
+	minValue - An integer.
+    OUTPUT:
+	fastq - A fastq object. 
+    Takes in a fastq object and an integer.  The DNA and quality
+    sequences are trimmed to end just before the first 
+    low-quality base. 
+    """
+    count = 0
+    for score in fastq.quality:
+        if score < minValue:
+            break
+        count = count + 1
+    fastq.sequence = fastq.sequence[0:count]  
+    fastq.quality = fastq.quality[0:count]
+    return fastq
+
+
+def main(args):
+    """
+    Parses the command line options.
+    Depending on the command line options the correct 
+    fasta or fastq or fasta with quality function calls
+    are made. 
+    """
+    options = parseArgs(args)
+    # The code below calls the correct function calls 
+    # depending on the user options. The code is structured
+    # so that the outer 'if' stetments handle input files. 
+    # Inside each statemtn there is a function call to
+    # fastFunctions embded inside a 'for' loop. 
+    # Inside this loop there is a call to endTrim
+    # followed by a series of interior 'if' staements that
+    # handle the various output options. 
+
+    # This block handels fasta input files
+    if options.in_fasta is not None:
+	# This block deals with input fasta files with
+	# corresponding quality files
+	if options.in_qual is not None:
+            for fastq in fastFunctions.readFastaWithQuality(
+			options.in_fasta, options.in_qual,
+			options.alphabet, options.verbose,
+			options.multiCases):
+                fastq = endTrim(fastq, options.min_qual)
+		# This block of code calls the correct print
+		# function depending on the users requested 
+		# output. Fasta format with quality is first. 
+                if options.out_fasta is not None:
+                    fastFunctions.printFastaSeq(
+			options.out_fasta,fastq,
+			options.limitLineLength)
+                    fastFunctions.printQualSeq(options.out_qual,
+			fastq)
+		# The two fastq output options 
+	        else:
+		    if options.out_64 is not None:
+    		        fastFunctions.printFastqSeq(
+			    options.out_64,fastq,64)
+		    else:
+    		        fastFunctions.printFastqSeq(
+			    options.out_33,fastq,33)
+        # This block handles the case where only a single
+	# fasta is provided. The fasta is not trimmed, but this
+	# can be used to reformat fasta files. 
+        else:
+	    for fasta in fastFunctions.readFasta(
+			options.in_fasta, options.alphabet,
+			options.verbose, options.multiCases):
+		fastFunctions.printFastaSeq(options.out_fasta, 
+			fasta, options.limitLineLength)
+    # This block of code handles fastq input files
+    else:
+	# Fastq 33 input format 
+	if options.in_33 is not None:
+	    for fastq in fastFunctions.readFastq(options.in_33,
+			options.alphabet,options.verbose,
+			options.multiCases,33):
+                fastq = endTrim(fastq, options.min_qual)
+		# This block of code calls the correct print 
+		# function depending on the users requested 
+		# output. Fasta format with quality is first. 
+		if options.out_fasta is not None:
+                    fastFunctions.printFastaSeq(
+			options.out_fasta,fastq,
+			options.limitLineLength)
+                    fastFunctions.printQualSeq(options.out_qual,
+			fastq)
+		# The two fastq output options
+		else:
+		    if options.out_64 is not None:
+    		        fastFunctions.printFastqSeq(
+			    options.out_64,fastq,64)
+		    else:
+    		        fastFunctions.printFastqSeq(
+			    options.out_33,fastq,33)
+	# Fastq 64 input format
+	else:
+	    for fastq in fastFunctions.readFastq(options.in_64,
+			options.alphabet,options.verbose,
+			options.multiCases,64):
+                fastq = endTrim(fastq, options.min_qual)
+		# This block of code calls the correct print
+		# function depending on the users requested 
+		# output. Fasta format with quality is first.
+		if options.out_fasta is not None:
+                    fastFunctions.printFastaSeq(
+			options.out_fasta,fastq,
+			options.limitLineLength)
+                    fastFunctions.printQualSeq(options.out_qual,
+			fastq)
+		# The two fastq output options 
+		else:
+		    if options.out_64 is not None:
+    		        fastFunctions.printFastqSeq(
+				options.out_64,fastq,64)
+		    else:
+    		        fastFunctions.printFastqSeq(
+				options.out_33,fastq,33)
+ 
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))

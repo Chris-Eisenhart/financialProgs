@@ -1,0 +1,88 @@
+#!/usr/bin/env python2.7
+# count k-mer
+# Chris Eisenhart  ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu   
+"""
+Reads in a FASTA file from stdin and outputs a table of kmer and counts to stdout. 
+The output has two tokens on each line, the k-mer, followed by the count of that k-mer
+(space separated). Cases are ignored in the input FASTA file,
+ so 'a' will read the same as 'A'.
+Options can be used as follows;
+'--o 10' signifies order 10,
+'--a AGTDC' signifies the alphabet is AGTDC, 
+'--pseudo 3.23' will increment all kmers by 323, and 
+'--descend' will sort the output.  
+"""
+import  sys, operator, fileinput, collections, string, os.path, re, argparse, markovs
+
+def parseArgs(args): 
+    """ 
+    Sets up the argparse command-line parser and calls it. These options can be accessed
+    using args.option. For example args.a stores the alphabet provided. 
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("--o",
+    # The order of the model, stored as an integer. 
+    type = int,
+    help = " Specifies the order of the model, order 0 counts 1-mers",
+    action = "store")
+    parser.add_argument ("--a",
+    # The alphabet is stored as a string
+    help = " Specifies which letters of the sequence should be used",
+    action = "store")
+    parser.add_argument ("--pseudo",
+    # Stores the pseudo count number as a float. Can be accessed with options.pseudo 
+    type = float,
+    help = " Pseudo counts the kmers by the given number, the defualt is 0",
+    action = "store")
+    parser.add_argument ("--descend",
+    help = " Kmers with the least frequent occurence are printed first. The default is off",
+    action = "store_true")
+    parser.add_argument("--verbose",
+    # Sets warning tags to on
+    help = " The program will send warning messages to stderr. This is very messy, use with caution.",
+    action= "store_false")
+    # This is a counter intuitive definition, a drawback of using somebody elses
+    # fasta parser.  Using the command stores false, which indicates that the program
+    # should be verbose. 
+    parser.set_defaults(verbose = True)
+    parser.set_defaults(pseduo = 0)
+    parser.set_defaults(v = False)
+    parser.set_defaults(descend = False)
+    parser.set_defaults(o = 0)
+    args = parser.parse_args() # Initializes the options specified above
+    return args # Returns the parser as an object
+
+
+def main(args):
+    """
+    Reads in the user options. The program reads a Fasta file from sys.stdin.
+    Every kmer, and corresponding counts are determined. These values are printed
+    to sys.stdout.
+    """
+    options = parseArgs(args)
+    # The options object now holds all the options that the user has instantiated.
+    # These can be accessed with options.-userOption-  
+    options.o += 1
+    # Ofset by one to account for the markov naming convention, a 0 
+    # order markov chain counts 1-mers, a first order counts 2-mers, etc.  
+    counts = collections.Counter()
+    # Counts is a subclass of python dictionary.  counts["temp"] returns the value
+    # of temps. Counts will be used to store all the kmer's and corresponding values 
+    counts = markovs.count_kmers(sys.stdin,counts,options.o, options.a, options.verbose)
+    # Counts now holds the counts of kmers and corresponding values for the Fasta file
+    alpha = markovs.get_alpha(counts)
+    # Retrieves the alphabet being used in the input fasta, if the user did not
+    # provide an alphabet this will be used. 
+    if options.a is not None:
+        alpha = options.a
+
+    if options.pseudo is not None:
+    #Psuedo count if requested
+        counts = markovs.pseudo_count(counts, options.pseudo, alpha, options.o)
+    counts = markovs.sort_counts(counts, options.descend)
+    # Sorts the counts
+    markovs.print_counter(counts)
+    # prints the dictionary holding kmer name and counts. 
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))

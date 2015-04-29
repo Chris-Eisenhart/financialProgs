@@ -1,0 +1,107 @@
+#!/usr/bin/env python2.7
+# test_align
+# Chris Eisenhart  ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu
+# 11.20.2014 - 12.12.2014 
+"""
+This program performs master slave alignments on a given 
+fasta file.  The first sequence in the fasta file is considered
+the 'master' sequence and all subsequent sequences are 
+considered 'slave' sequences.  Each slave sequence is aligned 
+to the master sequence, the optimal alignment is generated in 
+A2M format. The program prints the master sequence followed 
+by each generated alignment in fasta format to sys.stdout. The
+original comment lines are preserved.
+"""
+import sys, operator, fileinput, collections
+import string, os.path, re, argparse, urllib
+import gzip, math, time, align
+
+def parseArgs(args): 
+    """ 
+    Sets up the argparse command-line parser and calls it. 
+    These options can be accessed using args.option. For
+    example args.verbose stores the verbose value (true/false) 
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("--fa",
+        help = " Read in from the  "
+        " specified file FASTA format. ",
+	type = argparse.FileType('r')) 
+    parser.add_argument ("--openCost",
+	help = " The penalty for aligning a new gap or insertion" 
+		" to the master sequence, the default is -12. ",
+	type = int,
+	action = "store")
+    parser.add_argument ("--extendCost",
+	help = " The penalty for aligning a gap to the"
+		" master sequence if the previous character"
+		" was also a gap, or the penalty for aligning an"
+		" insertion to the master sequence if the "
+		"previous character was also an insertion.  The"
+		" default is -1. ",
+	type = int,
+	action = "store")
+    parser.add_argument ("--doubleGapCost",
+	help = " The penalty for aligning a gap to the"
+		" master sequence if the previous character"
+		" was an insertion, or the penalty for aligning"
+		" an insertion to the master sequence if the "
+		"previous character was a gap.  The default is -3. ",
+	type = int,
+	action = "store")
+    parser.add_argument ("--matrixURL",
+	help = " The URL for a score matrix, the score matrix"
+		" defaults to http://users.soe.ucsc.edu/~karpl"
+		"us/bme205/f14/BLOSUM62 If a different score " 
+		"mastrix is used it must be in the same format.",
+	action = "store")
+    parser.add_argument ("--align",
+	help = " The program offers two options for alignment,"
+		" global and local. The global option loosely "
+		"follows the Needleman-Wunsch algorithm, whereas"
+		" the local option loosely follows the "
+		"Smith-Waterman algorithm. The default is local,"
+		" to change it use --align=global",
+	action = "store")
+    parser.add_argument ("--score_file",
+	help = " After each alignment is generated and printed"
+		" in A2M format, the printed alignment is scored"
+		" to the master sequence. The score is printed "
+		"on a new line beneath the sequence. This will "
+		"corrupt the output format; if this option is "
+		"selected the output will be neither fasta nor"
+		" A2M. ",
+	action = "store_true")
+    parser.set_defaults(fa = sys.stdin)
+    parser.set_defaults(openCost = -12)
+    parser.set_defaults(score_file = False)
+    parser.set_defaults(extendCost = -1)
+    parser.set_defaults(doubleGapCost = -3)
+    parser.set_defaults(matrixURL = ("http://users.soe.ucsc.edu/~karplus/bme205/f14/BLOSUM62"))
+    options = parser.parse_args() 
+    return options # Returns the parser as an object
+
+
+def main(args): 
+    """
+    Calls parse args, identifies the users choice of global
+    or local alignment.  The accepted alphabet is determined.
+    The file provided is aligned and printed in A2M format. 
+    """
+    isGlobal = False
+    options = parseArgs(args) 
+    if options.align == "global":
+	isGlobal = True
+    elif  options.align == "local":
+	isGlobal = False
+    substMatrix = align.getScoreMatrix(options.matrixURL)
+    alphabet = ""
+    for key, value in substMatrix.iteritems():
+	alphabet += key
+    align.alignFile(options.fa, options.extendCost,
+		options.doubleGapCost, options.openCost,
+		alphabet, substMatrix, isGlobal,
+		options.score_file)
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))

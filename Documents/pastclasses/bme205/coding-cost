@@ -1,0 +1,92 @@
+#!/usr/bin/env python2.7
+# coding cost
+# Chris Eisenhart  ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu   
+"""
+Reads in a table of k-mer counts from stdin. The kmers must  be in alphabetic order, 
+printed one kmer and count per line, separated by a space.  Reads in Fasta 
+formatted sequences from a Fasta file.  The program computes the total encoding cost
+in bits for all the Fasta sequences from the Fasta file. The encoding cost for a
+character A using model M is -log_2 P_M(A), the encoding cost of a sequence is 
+the sum of the costs for the characters.  The encoding cost for a Fasta file is
+the summation of the encoding costs of the sequences in the file. The following 
+arguments are accepted as options, pseudo, and kmerFile.  They can be used as follows;
+--pseudo 1.4892 and
+--kmerFile fasta.test 
+"""
+import  sys, operator, fileinput, collections 
+import string, os.path, re, argparse, markovs, itertools
+
+def parseArgs(args): 
+    """ sets up the argparse command-line parser and calls it
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("fasta",
+    type = argparse.FileType('r'),
+    help = " Specifies the inputFile",
+    action = "store")
+    parser.add_argument ("--pseudo",
+    # Stores the pseudo count number. Can be accessed with args.pseudo 
+    type = float,
+    help = " Pseudo counts the kmers by the given number, the defualt is 0",
+    action = "store")
+    parser.add_argument ("--kmerFile",
+    # Opens the inputFile and defines it as read only, can be accessed with args.kmerFile
+    type = argparse.FileType('r'),
+    help = " Reads the kmer counts from the specified file",
+    action = "store")
+    parser.add_argument("--verbose",
+    # Sets warning tags to on
+    help = " The program will send warning messages to stderr. This is very messy, use with caution.",
+    action= "store_true")
+    # This is a counter intuitive definition, a drawback of using somebody elses
+    # fasta parser.  Using the command stores false, which indicates that the program
+    # should be verbose. 
+    parser.set_defaults(verbose = True)
+    parser.set_defaults(pseudo = 1)
+    args = parser.parse_args() # Initializes the options specified above
+    return args # Returns the parser as an object
+
+
+def main(args):
+    """
+    Reads in the user options. If an input file is specified it is opened,
+    else the program will read from sys.stdin.  The count of each kmer is 
+    determined and printed. 
+    """
+    options = parseArgs(args)
+    # Check if the user used the kmerFile command. If they did open the 
+    # specified file and read from it, otherwise read from stdin. 
+    if options.kmerFile is not None:
+        inputFile = options.kmerFile 
+    else: inputFile = sys.stdin
+    counts = collections.Counter()
+    # Counts is a subclass of python dictionary.  counts["temp"] returns the value
+    # of temps. Counts will be used to store all the kmer's and corresponding values 
+    counts_and_kmerSize = markovs.read_counter_and_kmerSize(inputFile)
+    # Read in the counts and the kmer size. Then split them apart. 
+    counts = counts_and_kmerSize[0]
+    k = counts_and_kmerSize[1]
+    # Get the alphabet from counts. 
+    alpha = markovs.get_alpha(counts)
+    # Pseudo count the collection, this will add pseudo to every possible kmer. 
+    # Kmers are determined using alpha and k.
+    counts = markovs.pseudo_count(counts, options.pseudo, alpha, k) 
+    # Sort counts alphabetically, this means that all kmers of a given k-1 block
+    # will come in order. This is critical for make_score_matrix.
+    counts = markovs.sort_counts(counts, False)
+    
+    scoreMatrix = collections.Counter()
+    # The score matrix is represented internally as a collections.Counter object.
+    # scoreMatrix["kmer"] will return  - log_2_ (probability) of the given kmer
+    # occuring, after the pseudo count and training data has been taken into account. 
+    scoreMatrix = markovs.make_score_matrix(counts,k)
+    # Using the score matrix the Fasta file is scored. Scores is a tuple with 
+    # three elements, the average encoding cost per character, the average encoding cost 
+    # per sequence, and the total encoding cost for the file.
+    scores = markovs.score_fasta_file(options.fasta,scoreMatrix,alpha,k, options.verbose)
+    # Print the scores to stdout, with a header line. The header line prints the
+    # counts file, the fasta file, the alphabet, and the order. 
+    markovs.print_scores(scores,inputFile.name,options.fasta.name, str(k-1), alpha) 
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))

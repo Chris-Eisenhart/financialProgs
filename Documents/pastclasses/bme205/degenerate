@@ -1,0 +1,70 @@
+#!/usr/bin/env python2.7
+# degenerate
+# Chris Eisenhart 11/10/2014 
+# ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu  Third Version
+"""
+This program identifies the 'best' degenerate codon for all possible amino acid sets. 
+The program starts by generating a list of all possible degenerate codons, where a 
+degenerate nucleotide is any character from "ACGTRYKMSWBDHVN" and a codon is three
+degenerate nucleotides in a row.  With this alphabet there are a possible 3375 degenerate
+codons. For each degenerate codon all possible nuceotide codons are determined, 
+for example degenerate codon 'MAA' encodes for nucleotide codons AAA and CAA. 
+Next the codons are translated into single letter amino acid abreviations. These 
+amino acid abreviations are counted and stored. For example degenerate codon 'MAA'
+would now correspond to [(Q=1),(K=1)] where Q is the translation for CAA and K is
+the translation for AAA. All possible amino acids encoded for by a single degenerate
+codon are considered an amino acid set. For example 'MAA' would correspond to the
+amino acid set 'KQ', the amino acid sets are sorted alphabetically. The output histogram 
+contains a single line for each amino acid set, these lines are sorted alphabetically. 
+Using the amino acid counts the 'imbalance' is calculated for each degenerate codon.
+Imbalance is defined to be the maximum amino acid count minus the minimum amino 
+acid count divided by the total number of amino acids. For example considering
+degenerate codon 'MAA' the imbalance would be (1 - 1) / 2 = 0. For each amino 
+acid set the degenerate codon with the lowest (minimal) imbalance score is 
+determined. To handle the case where two degenerate codons have the same amino
+acid set and the same imbalance score a fourth value is needed. This value
+is the average frequency of the degenerate codon. The average frequency of a 
+degenerate codon is determined in two steps; first identify all possible 
+nucleotide codons encoded in the degenerate codon, then sum the frequency of 
+each nuclotide codon and divide by the total number of nucleotide codons considered. 
+Now there is enough information to decide which degenerate codon is 'best'
+When an amino acid set has more than one degenerate codon with the same
+minimal imbalance score, the degenerate codon with the highest average frequency
+is chosen.  The final output is a histogram with four columns, the first is the
+amino acid set, the second is the 'best' degenerate codon for that amino acid set, 
+the third is the minimal imbalance score for the amino acid set, and the fourth is
+the average frequency of the selected degenerate codon. The output is printed to 
+sys.stdout with one line for each possible amino acid set.  
+"""
+from __future__ import print_function  
+import  sys, operator, fileinput, collections, string, os.path
+import  re, argparse, degenerateModule
+
+def parseArgs(args): 
+    """
+    Set the specifications for user provided options. The following 
+    options are supported, 
+	--codon, 
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("--codon",
+    help = " Specifies the codon table, the default is "
+		" http://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=199310&aa=1&style=N"
+		" All tables must be in the same format.",
+    action = "store")
+    parser.set_defaults (codon = ("http://www.kazusa.or.jp/codon/cgi-bin/showcodon.cgi?species=199310&aa=1&style=N"))
+    options = parser.parse_args()
+    return options
+
+def main(args):
+    """
+    Reads in the user commands and options, opening
+    any files if necessary otherwise reading from sys.stdin. 
+    Counts the occurences of words in the input file. 
+    The words and their counts are printed. 
+    """
+    options = parseArgs(args)
+    degenerateModule.processAllCodons(options.codon)
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))
