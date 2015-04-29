@@ -1,0 +1,26 @@
+The main documents directory. 
+There should be no files in this directory, only folders. 
+A basic clean up script was written ----> clean.sh
+    It has since moved to ~/ 
+The following folders are contained;
+JPG/
+MKV/
+MP4/
+PDF/
+PNG/
+PYTHON/
+Passwords/
+R/
+README
+TEX/
+TXT/
+ZIP/
+bioinformatics/
+djangoStuffs/
+kentStuffs/
+pastclasses/
+personalRes.CV/
+potentialGarbage/
+profileGenomics/
+randomProgs/
+taxes2014/
