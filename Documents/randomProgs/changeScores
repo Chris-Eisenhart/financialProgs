@@ -1,0 +1,72 @@
+#!/usr/bin/env python2.7
+# genetic drift
+# Chris Eisenhart 01/08/2015
+from __future__ import print_function  
+import  sys, operator, fileinput, collections, string, os.path
+import  re, argparse
+import random
+
+def parseArgs(args): 
+    """
+    Set the specifications for user provided options. The following 
+    options are supported, 
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("--file1",
+        help = " Read in from the  "
+        " specified file FASTA format. ",
+	type = argparse.FileType('r')) 
+    parser.add_argument ("--file2",
+        help = " Read in from the  "
+        " specified file FASTA format. ",
+	type = argparse.FileType('r')) 
+    parser.add_argument ("--score", "-s",
+    help = " The T value cuttoff, must be an integer",
+    type = int,
+    action = "store")
+    parser.add_argument ("--verbose", "-v",
+    help = " Print individual simulation statistics and all default conditions",
+    action = "store_true")
+    parser.set_defaults (verbose = False)
+    parser.set_defaults (score = 4)
+    options = parser.parse_args()
+    return options
+
+def main(args):
+    """
+    Reads in the user commands and options, opening
+    any files if necessary otherwise reading from sys.stdin. 
+    """
+    options = parseArgs(args)
+    scores = collections.Counter()
+    list1 = []
+    list2 = []
+    t = 0
+    for line in options.file1:
+        splitLine = line.split()
+        list1.append(float(splitLine[0]))
+    for line in options.file2:
+        splitLine = line.split()
+        list2.append(float(splitLine[0]))
+    print (len(list1), len(list2))
+    while True:
+	if (int(t*10) == 100): 
+	    print (t)
+	    break
+        l1below = 0
+        l2below = 0
+	for line in list1:
+	    if float(line) < t:
+	        l1below += 1 
+
+	for line in list2:
+	    if float(line) < t:
+	        l2below += 1
+	sum1 = 1 - l1below/float(len(list1))	
+	sum2 = l2below/float(len(list2))	
+	print (sum1, sum2, t)
+	t += .1
+	
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))

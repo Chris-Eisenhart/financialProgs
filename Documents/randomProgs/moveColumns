@@ -1,0 +1,49 @@
+#!/usr/bin/env python2.7
+# moveColumns
+# Chris Eisenhart 03/24/2015
+"""
+This program takes in a tab deliminated file and moves the columns into the user supplied order. 
+The columns are numbered starting at 0. The user should provide the new column order, ex
+3,1,2,0. Only columns listed are moved, columns may be listed multiple times.  For example
+"moveColumn 0 0 0 0 0 0 < someFile.txt > someOutput.txt" is a valid program call and will
+print the first column six times tab separated to the output file. 
+"""
+from __future__ import print_function  
+import  sys, operator, fileinput, collections, string, os.path
+import  re, argparse, random
+
+
+def parseArgs(args): 
+    """
+    Set the specifications for user provided options. The following 
+    options are supported, 
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("columnOrder", metavar = 'N', type = int, nargs ='+', 
+    help = "The order of the columns")
+    parser.add_argument ("--verbose", "-v",
+    help = " Print individual simulation statistics and all default conditions",
+    action = "store_true")
+    parser.set_defaults (verbose = False)
+    parser.set_defaults (dense = False)
+    options = parser.parse_args()
+    return options
+
+def main(args):
+    """
+    Reads in the user commands and options, opening
+    any files if necessary otherwise reading from sys.stdin. 
+    """
+    options = parseArgs(args)
+    if options.verbose:
+        print(options.verbose, options.columnOrder)
+    for line in sys.stdin:
+        resultLine = ""
+	splitLine = line.split()
+    	splitLineList = list(splitLine)
+        for item in options.columnOrder: 
+              resultLine += splitLine[item] + "\t"
+        print (resultLine)
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))

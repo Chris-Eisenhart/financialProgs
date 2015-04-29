@@ -1,0 +1,18 @@
+vcftools --vcf file1.vcf --min-alleles 2 --max-alleles 2
+
+u=0.000000002;
+ 
+cd /usr/bin
+sudo ln -s /Users/Chris/Library/vcftools_0.1.12b/bin/vcftools . 
+
+hgBbiDbLink hg38 wgEncodeRegTfbsClusteredV3 /hive/data/genomes/hg38/bed/hg19MassiveLift/wgEncodeReg/wgEncodeRegTfbsClusteredV3/wgEncodeRegClusteredV3.bed
+
+README.txt 658dc4ebcefb5a038c74f190674577e3 1337983215
+files.txt d41d8cd98f00b204e9800998ecf8427e 1347468859
+index.html 404a7fd804b3cf2652baf16d0fc0a798 1316546535
+md5sum.history 7a6603dab474d2d724f1e81f1e60391c 1348773677
+md5sum.txt e8ac4f2f20c1b31cb1c92c2217af52aa 1348773677
+preamble.html
+
+
+select wgEncodeRegTfbsCellsV3.id,wgEncodeRegTfbsCellsV3.name,wgEncodeRegTfbsClusteredInputsV3.tableName,wgEncodeRegTfbsClusteredInputsV3.cellType,wgEncodeRegTfbsClusteredInputsV3.factor,wgEncodeRegTfbsClusteredInputsV3.antibody,wgEncodeRegTfbsClusteredInputsV3.treatment,wgEncodeRegTfbsClusteredInputsV3.lab from wgEncodeRegTfbsClusteredInputsV3,wgEncodeRegTfbsCellsV3 where wgEncodeRegTfbsClusteredInputsV3.source = wgEncodeRegTfbsCellsV3.description and factor='ARID3A' order by wgEncodeRegTfbsClusteredInputsV3.source

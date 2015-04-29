@@ -1,0 +1,49 @@
+#!/usr/bin/env python2.7
+# genetic drift
+# Chris Eisenhart 01/08/2015
+from __future__ import print_function  
+import  sys, operator, fileinput, collections, string, os.path
+import  re, argparse
+import random
+
+def parseArgs(args): 
+    """
+    Set the specifications for user provided options. The following 
+    options are supported, 
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("--score", "-s",
+    help = " The T value cuttoff, must be an integer",
+    type = int,
+    action = "store")
+    parser.add_argument ("--verbose", "-v",
+    help = " Print individual simulation statistics and all default conditions",
+    action = "store_true")
+    parser.set_defaults (verbose = False)
+    parser.set_defaults (score = 4)
+    options = parser.parse_args()
+    return options
+
+def main(args):
+    """
+    Reads in the user commands and options, opening
+    any files if necessary otherwise reading from sys.stdin. 
+    """
+    options = parseArgs(args)
+    scores = collections.Counter()
+    for line in sys.stdin:
+	splitLine = line.split()
+	for value in range(10):
+	    if float(splitLine[0]) > float(value):
+		if float(splitLine[0]) < float(value+1):
+		    scores[value] +=1
+    scoreSum = sum(scores.values())
+    smallSum = 0
+    for i in range(options.score + 1): 
+	smallSum += scores[i]
+    print (smallSum/float(scoreSum), 1-(smallSum/float(scoreSum)) , smallSum, scoreSum)
+    for key, value in scores.iteritems():
+	print ("%s\t%s"%(key,value))
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))

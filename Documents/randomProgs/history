@@ -1,0 +1,500 @@
+   45  vim challenge1.py
+   46  python challenge1UnitTest.py 
+   47  vim challenge1.py
+   48  python challenge1UnitTest.py 
+   49  vim challenge1.py
+   50  python challenge1UnitTest.py 
+   51  vim challenge1.py
+   52  vim challenge1.py
+   53  python challenge1UnitTest.py 
+   54  vim challenge1.py
+   55  python challenge1UnitTest.py 
+   56  vim challenge1.py
+   57  python challenge1UnitTest.py 
+   58  python challenge1UnitTest.py 
+   59  python challenge1UnitTest.py 
+   60  python challenge1UnitTest.py 
+   61  python challenge1UnitTest.py 
+   62  python challenge1UnitTest.py 
+   63  python challenge1UnitTest.py 
+   64  python challenge1UnitTest.py 
+   65  python challenge1UnitTest.py 
+   66  vim challenge1.py
+   67  vim challenge1UnitTest.py 
+   68  python challenge1UnitTest.py 
+   69  vim challenge1UnitTest.py 
+   70  python challenge1UnitTest.py 
+   71  python challenge1UnitTest.py 
+   72  python challenge1UnitTest.py 
+   73  python challenge1UnitTest.py 
+   74  python challenge1UnitTest.py 
+   75  vim challenge1.py
+   76  vim challenge1UnitTest.py 
+   77  python challenge1UnitTest.py 
+   78  vim challenge1.py
+   79  python challenge1UnitTest.py 
+   80  vim challenge1.py
+   81  python challenge1UnitTest.py 
+   82  vim challenge1.py
+   83  python challenge1UnitTest.py 
+   84  vim challenge1.py
+   85  python challenge1UnitTest.py 
+   86  python challenge1UnitTest.py 
+   87  python challenge1UnitTest.py 
+   88  vim challenge1.py
+   89  vim challenge1UnitTest.py 
+   90  python challenge1UnitTest.py 
+   91  python challenge1UnitTest.py 
+   92  python challenge1UnitTest.py 
+   93  python challenge1UnitTest.py 
+   94  python challenge1UnitTest.py 
+   95  python challenge1UnitTest.py 
+   96  python challenge1UnitTest.py 
+   97  vim challenge1UnitTest.py 
+   98  vim challenge1.py
+   99  python challenge1UnitTest.py 
+  100  vim challenge1.py
+  101  vim challenge1UnitTest.py 
+  102  python challenge1UnitTest.py 
+  103  vim challenge1UnitTest.py 
+  104  python challenge1UnitTest.py 
+  105  vim challenge1.py
+  106  vim challenge1.py
+  107  vim challenge1UnitTest.py 
+  108  vim challenge1UnitTest.py 
+  109  python challenge1UnitTest.py 
+  110  vim challenge1UnitTest.py 
+  111  python challenge1UnitTest.py 
+  112  vim challenge1UnitTest.py 
+  113  python challenge1UnitTest.py 
+  114  vim challenge1UnitTest.py 
+  115  vim challenge1.py
+  116  python challenge1UnitTest.py 
+  117  vim challenge1.py
+  118  vim challenge1.py
+  119  python challenge1UnitTest.py 
+  120  python challenge1UnitTest.py 
+  121  vim challenge1.py
+  122  python challenge1UnitTest.py 
+  123  vim challenge1.py
+  124  python challenge1UnitTest.py 
+  125  python challenge1UnitTest.py 
+  126  python challenge1UnitTest.py 
+  127  python challenge1UnitTest.py 
+  128  python challenge1UnitTest.py 
+  129  python challenge1UnitTest.py 
+  130  vim challenge1.py
+  131  python challenge1UnitTest.py 
+  132  vim challenge1.py
+  133  python challenge1UnitTest.py 
+  134  vim challenge1.py
+  135  python challenge1UnitTest.py 
+  136  vim challenge1.py
+  137  python challenge1UnitTest.py 
+  138  vim challenge1.py
+  139  python challenge1UnitTest.py 
+  140  python challenge1UnitTest.py 
+  141  python challenge1UnitTest.py 
+  142  python challenge1UnitTest.py 
+  143  vim challenge1.py
+  144  python challenge1UnitTest.py 
+  145  cp challenge1.py working.py
+  146  vim challenge1.py
+  147  vim oldCode.py
+  148  vim challenge1.py
+  149  vim oldCode.py
+  150  python challenge1UnitTest.py 
+  151  vim writtenAnswers.txt
+  152  vim challenge1.py
+  153  python challenge1UnitTest.py 
+  154  vim challenge1.py
+  155  vim writtenAnswers.txt
+  156  vim challenge1.py
+  157  vim writtenAnswers.txt
+  158  vim challenge1.py
+  159  vim writtenAnswers.txt
+  160  vim challenge1.py
+  161  python challenge1UnitTest.py 
+  162  vim challenge1.py
+  163  vim writtenAnswers.txt
+  164  python challenge1UnitTest.py 
+  165  vim challenge1.py
+  166  vim writtenAnswers.txt
+  167  python challenge1UnitTest.py 
+  168  cd Documents/bme230/
+  169  s
+  170  ls
+  171  cd ..
+  172  mkdir kentStuffs
+  173  mv bme230/d3* kentStuffs/
+  174  cd kentStuffs/
+  175  ls
+  176  cp ../bme230/temp.html temp.html
+  177  ls
+  178  vim temp.html 
+  179  vim temp.html 
+  180  vim temp.html 
+  181  vim temp.html 
+  182  vim temp.html 
+  183  vim temp.html 
+  184  vim temp.html 
+  185  vim temp.html 
+  186  vim temp.html 
+  187  sftp ceisenhart@hgwdev.sdsc.edu
+  188  vim temp.html 
+  189  mv ../mbostocks3887235.html mbostocks3887235.html
+  190  vim temp.html 
+  191  vim mbostocks3887235.html 
+  192  vim mbostocks3887235.html 
+  193  vim mbostocks3887235.html 
+  194  vim mbostocks3887235.html 
+  195  vim data.csv
+  196  vim mbostocks3887235.html 
+  197  vim mbostocks3887235.html 
+  198  vim mbostocks3887235.html 
+  199  make
+  200  vim mbostocks3887235.html 
+  201  vim mbostocks3887235.html 
+  202  mv ../rehatch.html.txt rehatch.html
+  203  vim rehatch.html 
+  204  ls
+  205  mv ../d3pieGenerated.html.txt d3pieGenerated.html
+  206  cd Documents/bme230/
+  207  vim working.py 
+  208  vim working.py 
+  209  ssh ceisenhart@hgwdev.sdsc.edu
+  210  ssh ceisenhart@hgwdev.sdsc.edu
+  211  ssh ceisenhart@hgwdev.sdsc.edu
+  212  cd /Users/Chris/Library/django-trunk/
+  213  ls
+  214  vim INSTALL 
+  215  vim INSTALL 
+  216  python setup.py install
+  217  ls
+  218  django/
+  219  ls
+  220  cd django/
+  221  ls
+  222  cd utils/
+  223  ls
+  224  cd ..
+  225  cd ..
+  226  ls
+  227  vim README.rst 
+  228  vimi INSTALL 
+  229  vim INSTALL 
+  230  python setup.py install 
+  231  su 
+  232  python setup.py install 
+  233  python sudo setup.py install 
+  234  ls
+  235  sudo python setup.py install 
+  236  ls
+  237  cd django/
+  238  cd /usr/bin
+  239  ls
+  240  cd Library/
+  241  git clone git://github.com/django/django.git django-trunk
+  242  ls
+  243  cd /usr/bin
+  244  ls
+  245  ln -s /Users/Chris/Library/samtools/samtools . 
+  246  sudo ln -s /Users/Chris/Library/samtools/samtools . 
+  247  sudo ln -s /Users/Chris/Library/django-trunk/django/bin/django-admin.py . 
+  248  ssh ceisenhart@hgwdev.sdsc.edu
+  249  ssh ceisenhart@hgwdev.sdsc.edu
+  250  ssh ceisenhart@hgwdev.sdsc.edu
+  251  ssh ceisenhart@hgwdev.sdsc.edu
+  252  ssh ceisenhart@hgwdev.sdsc.edu
+  253  sftp ceisenhart@hgwdev.sdsc.edu
+  254  ssh calef@edser2.ucsc.edu
+  255  ssh ceisenhart@hgwdev.sdsc.edu
+  256  ssh ceisenhart@hgwdev.sdsc.edu
+  257  python -c "import django; print(django.get_version())"
+  258  ls
+  259  cd Library/
+  260  ls
+  261  cd kent/
+  262  ls
+  263  cd genomeBrowser/
+  264  ls
+  265  cd ..
+  266  ls
+  267  ls -l
+  268  cd codeAndReading/
+  269  ls
+  270  ls
+  271  cd 
+  272  ls
+  273  ls
+  274  ls
+  275  ls
+  276  cd Library/
+  277  git clone git://github.com/ENCODE-DCC/kentUtils.git
+  278  cd
+  279  cd Documents/
+  280  mkdir djangoStuffs
+  281  django-admin startproject mysite
+  282  ls
+  283  ls
+  284  mv mysite/ djangoStuffs/
+  285  cd djangoStuffs/
+  286  ls
+  287  cd mysite/
+  288  ls
+  289  cd mysite/
+  290  vim settings.py 
+  291  mysql
+  292  vim settings.py 
+  293  python manage.py migrate
+  294  ls
+  295  cd ..
+  296  ls
+  297  python manage.py migrate
+  298  python manage.py runserver
+  299  cd ..
+  300  cd .
+  301  cd ..
+  302  ls
+  303  cd ../Library/
+  304  git clone git://github.com/ENCODE-DCC/kentUtils.git
+  305  ssh ceisenhart@hgwdev.sdsc.edu
+  306  sftp ceisenhart@hgwdev.sdsc.edu
+  307  ssh ceisenhart@hgwdev.sdsc.edu
+  308  ssh ceisenhart@hgwdev.sdsc.edu
+  309  ssh ceisenhart@hgwdev.sdsc.edu
+  310  ssh ceisenhart@hgwdev.sdsc.edu
+  311  ssh ceisenhart@hgwdev.sdsc.edu
+  312  ssh ceisenhart@hgwdev.sdsc.edu
+  313  ls
+  314  cd Documents/
+  315  ls
+  316  cd profileGenomics/
+  317  ls
+  318  cd ../randomStuff 
+  319  ls
+  320  cd ../randomProgs/
+  321  ls
+  322  vim getOrganismNames 
+  323  cd ..
+  324  ls
+  325  ls *col*
+  326  vim randomStuff 
+  327  cd randomProgs/
+  328  ls
+  329  cp getOrganismNames moveColumns
+  330  ls
+  331  vim moveColumns
+  332  python moveColumns
+  333  python moveColumns 1 2 3 
+  334  ls
+  335  mv ../*.bed . 
+  336  ls
+  337  cd ..
+  338  ls
+  339  ls
+  340  cd randomProgs/
+  341  sftp ceisenhart@hgwdev.sdsc.edu
+  342  ls
+  343  python moveColumns 1 2 3 < hg19orfeomeMrna.bed > output
+  344  vim output
+  345  vim moveColumns 
+  346  make
+  347  python moveColumns 1 2 3 < hg19orfeomeMrna.bed > output
+  348  vim output
+  349  vim moveColumns 
+  350  head -n 1 hg19orfeomeMrna.bed 
+  351  vim hg19orfeomeMrna.bed 
+  352  head -n 2 hg19orfeomeMrna.bed 
+  353  vim hg19orfeomeMrna.bed 
+  354  python moveColumns 9 11 12 9 4 8 11 12 0 17 18 19 < hg19orfeomeMrna.bed > output
+  355  vim output
+  356  python moveColumns 10 12 13 10 5 9 12 13 1 18 19 20 < hg19orfeomeMrna.bed > output
+  357  vim output
+  358  python moveColumns 14 12 13 10 5 9 12 13 1 18 19 20 < hg19orfeomeMrna.bed > output
+  359  vim output
+  360  python moveColumns 14 16 17 10 5 9 16 17 1 18 19 20 < hg19orfeomeMrna.bed > output
+  361  vim output
+  362  python moveColumns 14 16 17 10 5 9 16 17 1 18 19 20 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 < hg19orfeomeMrna.bed > output
+  363  vim output
+  364  mv output hg19orfeomeMrnaConverted.bed
+  365  sftp ceisenhart@hgwdev.sdsc.edu
+  366  ssh ceisenhart@hgwdev.sdsc.edu
+  367  sftp ceisenhart@hgwdev.sdsc.edu
+  368  vim *.py
+  369  ls
+  370  vim moveColumns 
+  371  sftp ceisenhart@hgwdev.sdsc.edu
+  372  ssh ceisenhart@hgwdev.sdsc.edu
+  373  ssh ceisenhart@hgwdev.sdsc.edu
+  374  sftp ceisenhart@hgwdev.sdsc.edu
+  375  ls
+  376  ssh ceisenhart@hgwdev.sdsc.edu
+  377  password 
+  378  ls
+  379  cd Documents/Passwords/
+  380  ls
+  381  ssh ceisenhart@hgwdev.sdsc.edu
+  382  ssh ceisenhart@hgwdev.sdsc.edu
+  383  ls
+  384  ssh ceisenhart@hgwdev.sdsc.edu
+  385  ssh ceisenhart@hgwdev.sdsc.edu
+  386  ssh ceisenhart@hgwdev.sdsc.edu
+  387  python -m SimpleHTTPServer $
+  388  python -m SimpleHTTPServer$
+  389  python -m SimpleHTTPServer&
+  390  screen python -m SimpleHTTPServer
+  391  python -m SimpleHTTPServer
+  392  python -m SimpleHTTPServer 8888
+  393  pwd
+  394  ls
+  395  cd Documents/
+  396  pwd
+  397  ls
+  398  vim 
+  399  vim 
+  400  vim tables.txt 
+  401  vim tables.txt 
+  402  vim tables.txt 
+  403  ls
+  404  ls
+  405  pwd 
+  406  ls *jim*
+  407  mkdir jimStuff 
+  408  cd jimStuff/
+  409  cd
+  410  cd
+  411  cd Documents/jimStuff/
+  412  cd ~/Documents 
+  413  cd
+  414  ls ~
+  415  pwd ~
+  416  cd
+  417  cd Documents/jimStuff/
+  418  ls
+  419  pwd
+  420  pwd ~
+  421  pwd
+  422  vim ~/Downloads/hg38ToHg19.over.chain
+  423  cp ~/Downloads/hg38ToHg19.over.chain ~/Documents/jimStuff/hg38ToHg19.over.chain 
+  424  ls
+  425  vim hg38ToHg19.over.chain temp.txt
+  426  mv hg38ToHg19.over.chain temp.txt 
+  427  ls
+  428  cp temp.txt temp2.txt
+  429  cp temp2.txt temp3.txt
+  430  cp temp.txt temp.someRandomFileExstension 
+  431  ls
+  432  ls 
+  433  ls -l 
+  434  ls
+  435  history >  history 
+  436  ls
+  437  history 
+  438  vim history 
+  439  pwd
+  440  ls
+  441  vim newTextFile
+  442  mv
+  443  mv newTextFile ~ 
+  444  ls
+  445  cd ~
+  446  ls
+  447  pwd
+  448  cd Documents/jimStuff/
+  449  cd ..
+  450  pwd
+  451  cd ..
+  452  pwd
+  453  cd ..
+  454  ls
+  455  cd Chris/
+  456  ls
+  457  cd Documents/jimStuff/
+  458  ls
+  459  ls .
+  460  ls ..
+  461  ls
+  462  ls *.txt 
+  463  ls -l *.txt
+  464  diff temp.txt temp2.txt 
+  465  vim temp.txt
+  466  diff temp.txt temp2.txt 
+  467  ls
+  468  cp ~/Documents/randomProgs/getOrganismNames getOrganismNames 
+  469  ls
+  470  cp ~/Documents/randomProgs/getOrganismNames ~/Downloads/getOrganismNames 
+  471  ls
+  472  pwd
+  473  ls
+  474  ssh ceisenhart@hgwdev.sdsc.edu
+  475  cd Documents/randomProgs/
+  476  make
+  477  vim helloWorld
+  478  gcc helloWorld 
+  479  gcc -c helloWorld 
+  480  ls
+  481  mv helloWorld helloWorld.c
+  482  gcc -c helloWorld.c
+  483  ls
+  484  helloWorld
+  485  gcc foo.c -o foo
+  486  gcc helloWorld.c -o helloWorld
+  487  cc helloWorld.c -o helloWorld
+  488  helloWorld
+  489  gcc helloWorld -o helloWorld.c
+  490  a.out
+  491  ls
+  492  vim helloWorld.c
+  493  cc helloWorld.c
+  494  xcode-select --install
+  495  cc helloWorld.c
+  496  xcode-select --install
+  497  xcode-select --install
+  498  xcode-select --install
+  499  cc helloWorld.c
+  500  xcode-select --install
+  501  cd Documents/randomProgs/
+  502  gcc helloWorld.c 
+  503  install xcode
+  504  install-xcode
+  505  xcode-select --install
+  506  gcc helloWorld.c 
+  507  xcode
+  508  xcode-select -p
+  509  gcc
+  510  gcc -version
+  511  gcc --version
+  512  xcode-select --install
+  513  vim helloWorld.c 
+  514  gcc helloWorld.c
+  515  vim helloWorld.c 
+  516  gcc helloWorld.c
+  517  ls
+  518  a.out
+  519  rm a.out
+  520  rm helloWorld
+  521  rm helloWorld.o
+  522  gcc helloWorld.c 
+  523  ls
+  524  a.out
+  525  vim helloWorld.c 
+  526  gcc helloWorld.c 
+  527  vim helloWorld.c 
+  528  gcc helloWorld.c 
+  529  vim helloWorld.c 
+  530  gcc helloWorld.c 
+  531  ls
+  532  a.out
+  533  helloWorld
+  534  ./a.out
+  535  ssh ceisenhart@hgwdev.sdsc.edu
+  536  ssh ceisenhart@campusrocks.cse.ucsc.edu
+  537  ssh ceisenha@campusrocks.cse.ucsc.edu
+  538  ssh ceisenha@campusrocks.cse.ucsc.edu
+  539  ssh ceisenha@campusrocks.cse.ucsc.edu -X
+  540  ssh ceisenhart@hgwdev.sdsc.edu
+  541  la
+  542  pwd
+  543  ls
+  544  history > history 
