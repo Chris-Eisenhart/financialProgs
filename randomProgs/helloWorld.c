@@ -1,6 +1,8 @@
 #include<stdio.h>
+#include "basic.h" 
 
 int main()
 {
-  printf("Hello World!");
+  printf("Hello World!\n");
+  printStats("Will this work?\n");
 }
