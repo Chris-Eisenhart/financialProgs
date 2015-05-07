@@ -45,10 +45,15 @@ def parseArgs(args):
     options = parser.parse_args()
     return options
 
-def printFrame(frameNum,frame):
+def rPrintORFs(starts, stops, i, k):
     """
+    Recursively prints ORF's from a list of start and stop codons
     """
-    print("For frame", frameNum,"starts",frame.starts,"ends", frame.ends,"rStarts", frame.rStarts,"rEnds", frame.rEnds)
+    while ((k < len(stops)) and (i < len(starts))):
+      if (starts[i]<stops[k]):
+        print ("A valid ORF starts at base ", starts[i], " and ends at base ", stops[k])
+        rPrintORFs(starts,stops, i+1, k)
+      k += 1 
 
 def main(args):
     """
@@ -70,16 +75,21 @@ def main(args):
           complement_table = string.maketrans("ACGT", "TGCA")
           rCodon = codon[::-1].translate(complement_table)
           if codon in stops:
-              allFrames[i%3].ends.append(i)
+              allFrames[i%3].ends.append(i+3)
           if codon in starts:
               allFrames[i%3].starts.append(i)
           if rCodon in stops:
               allFrames[i%3].rEnds.append(i)
           if rCodon in starts:
-              allFrames[i%3].rStarts.append(i)
+              allFrames[i%3].rStarts.append(i+3)
           i += 1
+
       for key,value in allFrames.iteritems(): 
-          printFrame(key,value)
+          print("For the ", key, "frame...")
+          if (not value.starts): value.starts.append(-3)
+          if (not value.rStarts): value.rStarts.append(-3)
+          rPrintORFs(value.starts,value.ends, 0, 0)
+          rPrintORFs(value.rStarts[::-1],value.rEnds[::-1], 0, 0)
 
 if __name__ == "__main__" :
     sys.exit(main(sys.argv))
