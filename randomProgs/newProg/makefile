@@ -1,10 +1,9 @@
 CC=gcc
-CFLAGS=-I.
+CFLAGS=-I../lib/ 
 DEPS = ../include/hellomake.h
 OBJ = hellomake.o hellofunc.o 
 
 %.o: %.c $(DEPS)
-	echo $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 hellomake: $(OBJ)
