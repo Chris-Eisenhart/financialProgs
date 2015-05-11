@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 # findORFs
-# Chris Eisenhart 11/10/2014 
+# Chris Eisenhart 05/07/2015 
 # ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu  Third Version
 """
 """
