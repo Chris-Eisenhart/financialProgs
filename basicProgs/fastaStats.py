@@ -24,10 +24,12 @@ def main(args):
     outputFile = sys.stdout
     totalBases = 0
     totalSeqs = 0
-    longestContig = 0
+    longestContig = 0 
+    contigs1k = 0
     contigs3k = 0
     contigs5k = 0
-    print ("")
+    contigs7k = 0
+    contigs9k = 0
     for fasta in fastFunctions.readFasta (inputFile, alphabet, False, True):
         totalBases += len(fasta.sequence)
         totalSeqs += 1
