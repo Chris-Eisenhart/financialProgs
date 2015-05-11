@@ -1,10 +1,10 @@
 #!/usr/bin/env python2.7
-# fastFunctions.py REDO
-# Chris Eisenhart 12.04.2014
+# fastFunctions.py 
+# Chris Eisenhart 5/11/2015
 # ceisenhart@soe.ucsc.edu/ceisenha@ucsc.edu
 from __future__ import print_function
 import sys, string, operator, fileinput, collections, os.path
-import  re, argparse
+import  re
 from itertools import izip
 """
 A module for fasta and fastq file I/O.

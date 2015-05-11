@@ -11,7 +11,7 @@ USAGE:
 
 from __future__ import print_function  
 import  sys, operator, fileinput, collections, string, os.path
-import  re, argparse, fastFunctions
+import  re, fastFunctions
 
 alphabet="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'"
 # The accepted characters in a word. A word is defined as any
@@ -42,14 +42,7 @@ def parseArgs(args):
 def main(args):
     """
     """
-    options = parseArgs(args)
-    # User options are stored here
-    starts = ["ATG"]
-    stops = ["TAG", "TAA", "TGA"]
     inputFile = sys.stdin
-    # Read from sys.stdin as a default.
-    if options.inputFile is not None:
-        inputFile = open(options.inputFile, 'r')
     outputFile = sys.stdout
     totalBases = 0
     totalSeqs = 0
