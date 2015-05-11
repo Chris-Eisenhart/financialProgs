@@ -1,10 +1,12 @@
-#!/usr/bin/env python2.7
+s#!/usr/bin/env python2.7
 # fastaStats
 # Chris Eisenhart 05/11/2015 
 # ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu 
 """
 This program runs on FASTA files and spits out some statistics. The largest contig, 
 average contig size, and total bases in the Fasta file will be reported. 
+USAGE: 
+  python fastaStats.py < inputfile > outputfile 
 """
 
 from __future__ import print_function  
