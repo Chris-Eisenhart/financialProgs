@@ -37,9 +37,10 @@ def main(args):
         outputList.append((len(fasta.sequence),fasta.sequence, fasta.header,fasta.extraData))
         outputList = sorted(outputList, key = operator.itemgetter(0), reverse = True)
         outputList = outputList[:30]
+    i = 1
     for length, sequence, header, extraData in outputList:
-        print(">%s%s length %i"%(header,extraData, length))
+        print(">contig%i %s%s length %i"%(i,header,extraData, length))
         print(sequence)
-
+        i +=1
 if __name__ == "__main__" :
     sys.exit(main(sys.argv))
