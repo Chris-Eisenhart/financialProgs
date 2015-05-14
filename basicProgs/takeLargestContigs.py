@@ -1,11 +1,11 @@
 #!/usr/bin/env python2.7
-# grabContigs
-# Chris Eisenhart 05/11/2015 
+# takeLargestContigs
+# Chris Eisenhart 05/14/2015 
 # ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu 
 """
-This program runs on a fasta file. Contigs of length 5000 or greater are coppied to the output file
+This program runs on a fasta file. The largest 30 sequences are printed to the output file provided
 USAGE: 
-  python fastaStats.py < inputfile > outputfile 
+  python takeLargestContigs.py < inputfile > outputfile 
 """
 
 from __future__ import print_function  
@@ -26,6 +26,10 @@ def biggerThan(length,bigList):
 
 def main(args):
     """
+    Go over each sequence in the fasta file. Keep a list of the 30 largest sequences, for each 
+    sequence seen append it to the list, then sort the list.  Take the 30 largest sequences
+    and go onto the next sequence.  After the file is processed iterate over the list and print
+    out each sequence in .fasta format. 
     """
     inputFile = sys.stdin
     outputList = []
