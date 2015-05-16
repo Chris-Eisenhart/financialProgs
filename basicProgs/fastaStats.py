@@ -22,7 +22,7 @@ def main(args):
     """
     inputFile = sys.stdin
     outputFile = sys.stdout
-    totalBases = 0
+    totalBases = 0.0
     totalSeqs = 0
     longestContig = 0 
     contigs1k = 0
@@ -30,22 +30,38 @@ def main(args):
     contigs5k = 0
     contigs10k = 0
     contigs20k = 0
+    contigs1kTotal = 0
+    contigs3kTotal = 0
+    contigs5kTotal = 0
+    contigs10kTotal = 0
+    contigs20kTotal = 0 
     for fasta in fastFunctions.readFasta (inputFile, alphabet, False, True):
         totalBases += len(fasta.sequence)
         totalSeqs += 1
-        if len(fasta.sequence) > 1000: contigs1k +=1 
-        if len(fasta.sequence) > 3000: contigs3k +=1 
-        if len(fasta.sequence) > 5000: contigs5k +=1 
-        if len(fasta.sequence) > 10000: contigs10k +=1 
-        if len(fasta.sequence) > 20000: contigs20k +=1 
+        if len(fasta.sequence) > 1000:
+            contigs1k +=1 
+            contigs1kTotal += len (fasta.sequence)
+        if len(fasta.sequence) > 3000: 
+            contigs3k +=1 
+            contigs3kTotal += len (fasta.sequence)
+        if len(fasta.sequence) > 5000:
+            contigs5k +=1 
+            contigs5kTotal += len (fasta.sequence)
+        if len(fasta.sequence) > 10000: 
+            contigs10k +=1 
+            contigs10kTotal += len (fasta.sequence)
+        if len(fasta.sequence) > 20000:
+            contigs20k +=1 
+            contigs20kTotal += len (fasta.sequence)
         if len(fasta.sequence) > longestContig:
             longestContig = len(fasta.sequence)
     print ("There are %i sequences with an average of %i bases. The longest contig is %i bases"
                 " There are %i bases total"% (totalSeqs, totalBases/totalSeqs, longestContig, totalBases))
-    print ("There are %i contigs of length 1000 or greater" % (contigs1k))
-    print ("There are %i contigs of length 3000 or greater" % (contigs3k))
-    print ("There are %i contigs of length 5000 or greater" % (contigs5k))
-    print ("There are %i contigs of length 10000 or greater" % (contigs10k))
-    print ("There are %i contigs of length 20000 or greater" % (contigs20k))
+    print ("There are %i sequences of length 1,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs1k, float(contigs1kTotal/totalBases )))
+    print ("There are %i sequences of length 3,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs3k, float(contigs3kTotal/totalBases )))
+    print ("There are %i sequences of length 5,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs5k, float(contigs5kTotal/totalBases )))
+    print ("There are %i sequences of length 10,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs10k, float(contigs10kTotal/totalBases )))
+    print ("There are %i sequences of length 20,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs20k, float(contigs20kTotal/totalBases )))
+
 if __name__ == "__main__" :
     sys.exit(main(sys.argv))
