@@ -1,15 +1,18 @@
 #!/bin/bash 
+#Chris Eisenhart 29/05/2015 
 usage() 
 # Usage statement for when things go wrong 
 { 
     echo "stash - Create a copy of the input file in a hidden folder named .stash.  
 usage:
     stash <fileToStash.ext> \"Comment inside quotes, white space is fine\"  
-Stashes the current file with a date and time stamp in a hidden folder .stash. 
-Helpful for private/local source code management.  When using the comment option
-the comment will be placed on the second line of the file being stashed.  Note
-when working with source code the correct comment identifier for the code should
-be included (IE // for C, # for bash, etc)." 1>&2
+Creates a copy of the input file  with a time/date stamp in a hidden directory named .stash. If 
+a .stash directory does not exist at runtime it will be created (you can use the flag -a with ls 
+to see hidden files).
+
+When using the comment option the comment will be placed on the second line of the file being
+stashed.  Note when working with source code the correct comment identifier for the code should be 
+included (IE // for C, # for bash, etc)." 1>&2
 }
 # Spit usage when no arguments are given
 if [ $# -lt 1 ]; then
