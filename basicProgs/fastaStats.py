@@ -57,11 +57,11 @@ def main(args):
             longestContig = len(fasta.sequence)
     print ("There are %i sequences with an average of %i bases. The longest contig is %i bases"
                 " There are %i bases total"% (totalSeqs, totalBases/totalSeqs, longestContig, totalBases))
-    print ("There are %i sequences of length 1,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs1k, float(contigs1kTotal/totalBases )))
-    print ("There are %i sequences of length 3,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs3k, float(contigs3kTotal/totalBases )))
-    print ("There are %i sequences of length 5,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs5k, float(contigs5kTotal/totalBases )))
-    print ("There are %i sequences of length 10,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs10k, float(contigs10kTotal/totalBases )))
-    print ("There are %i sequences of length 20,000 or greater, the bases in these sequences account for %f0.1 of the genome." % (contigs20k, float(contigs20kTotal/totalBases )))
+    print ("There are %i sequences of length 1,000 or greater, the bases in these sequences account for %f of the genome." % (contigs1k, float(contigs1kTotal/totalBases )))
+    print ("There are %i sequences of length 3,000 or greater, the bases in these sequences account for %f of the genome." % (contigs3k, float(contigs3kTotal/totalBases )))
+    print ("There are %i sequences of length 5,000 or greater, the bases in these sequences account for %f of the genome." % (contigs5k, float(contigs5kTotal/totalBases )))
+    print ("There are %i sequences of length 10,000 or greater, the bases in these sequences account for %f of the genome." % (contigs10k, float(contigs10kTotal/totalBases )))
+    print ("There are %i sequences of length 20,000 or greater, the bases in these sequences account for %f of the genome." % (contigs20k, float(contigs20kTotal/totalBases )))
 
 if __name__ == "__main__" :
     sys.exit(main(sys.argv))

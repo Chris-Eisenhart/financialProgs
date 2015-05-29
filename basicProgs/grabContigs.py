@@ -3,7 +3,7 @@
 # Chris Eisenhart 05/11/2015 
 # ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu 
 """
-This program runs on a fasta file. Contigs of length 5000 or greater are coppied to the output file
+This program runs on a fasta file. Contigs of length 10000 or greater are coppied to the output file
 USAGE: 
   python fastaStats.py < inputfile > outputfile 
 """
@@ -20,10 +20,11 @@ def main(args):
     """
     """
     inputFile = sys.stdin
+    i = 1 
     for fasta in fastFunctions.readFasta (inputFile, alphabet, False, True):
-        if len(fasta.sequence) > 5000: # Changing this number updates the contig size cutoff 
-            print (">%s%s" %(fasta.header, fasta.extraData))
+        if len(fasta.sequence) > 10000: # Changing this number updates the contig size cutoff 
+            print (">contig%i" %(i))
             print (fasta.sequence)
-
+            i += 1
 if __name__ == "__main__" :
     sys.exit(main(sys.argv))
