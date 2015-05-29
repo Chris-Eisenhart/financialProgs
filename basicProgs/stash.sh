@@ -20,6 +20,7 @@ export fileToStash="$1"
 if [ ! -s "${fileToStash}" ]; then 
     echo "ERROR: can not read fileToStash.ext file: $fileToStash" 1>&2 
     usage
+    exit 255
 fi
 
 # Check if there is a stash, make one if there is not
@@ -41,7 +42,7 @@ file="aRandomFileName2"
 while IFS= read -r line
 do 
     # Copy the file to be stashed into the .stash directory with the new file name
-    cp "${fileToStash}" "$line"
+    cp "../${fileToStash}" "$line"
     # Get the command to insert the comment formated 
     echo "sed -i.old '1s;^;" > aRandomFileName3 
     echo "$2" >> aRandomFileName3 
