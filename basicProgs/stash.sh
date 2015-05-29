@@ -35,33 +35,23 @@ cd .stash
 # Prepare the file name, uses two dummy files in the process
 echo ${fileToStash} > aRandomFileName1
 date >> aRandomFileName1 
-cat aRandomFileName1 | tr -d ' \t\n\r\f' > aRandomFileName2
+cat aRandomFileName1 | tr -d ' \t\n\r\f' | tr ':' '-' > aRandomFileName2
 echo  >> aRandomFileName2
 # Read the file name from the dummy file
 file="aRandomFileName2"
 while IFS= read -r line
-do 
-    # Copy the file to be stashed into the .stash directory with the new file name
-    cp "../${fileToStash}" "$line"
-    # Get the command to insert the comment formated 
-    echo "sed -i.old '1s;^;" > aRandomFileName3 
-    echo "$2" >> aRandomFileName3 
-    echo "; $line" >> aRandomFileName3
-    cat aRandomFileName3 | tr -d '\n' > aRandomFileName4
+do
+    # Paste the comment if it exists
+    if [ $# -gt 1 ]; then
+        echo $2 > "$line"
+    fi
+    # Paste the rest of the file 
+    cat "../${fileToStash}" >>  "$line"
 done < "$file" 
-
-# Read the command to insert comment from file and run it
-file="aRandomFileName4" 
-while IFS= read -r line
-do 
-    "$line" 
-done < "$file"
 
 # Remove the dummy files
 rm aRandomFileName1
 rm aRandomFileName2
-rm aRandomFileName3
-rm aRandomFileName4
 
 # Tell the user that everything is ok
 echo "The file ${fileToStash} was succesfully stashed" 
