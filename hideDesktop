@@ -17,9 +17,11 @@ fi
 if [ $# -lt 2 ]; then
     defaults write com.apple.finder CreateDesktop false
     killall Finder 
+    exit 255
 fi
 
-if [ $# -lt 3 ]; then
+if [ $# -gt 1 ]; then
     defaults write com.apple.finder CreateDesktop true
     killall Finder 
+    exit 255
 fi
