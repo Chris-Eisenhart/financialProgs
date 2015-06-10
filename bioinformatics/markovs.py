@@ -9,7 +9,7 @@ program's name, for example markovs.sort_counts(counts, True) is a valid
 function call.  
 """
 import sys, operator, fileinput, string, os.path
-import re, argparse, fasta_fastq_parser, itertools
+import re, argparse, fastFunctions, itertools
 import collections, math
 
 
@@ -90,8 +90,8 @@ def count_kmers(inputFile, counts, k, alpha, verbose):
     if alpha is None:
     # If no alphabet is provided use all ascii upper case letters 
         alpha = string.ascii_uppercase
-    for fasta in fasta_fastq_parser.read_fasta(inputFile,alpha,verbose,True):
-    # fasta is a fasta object, as defined in fasta_fastq_parser
+    for fasta in fastFunctions.readFasta(inputFile,alpha,verbose,True):
+    # fasta is a fasta object, as defined in fastFunctions
         if len(fasta.sequence)== 0: continue
         # Throw away empty sequences.
 	fasta = add_prefix_suffix(fasta, k)
@@ -148,7 +148,7 @@ def score_fasta_file(inputFile, scoreMatrix, alpha, k, verbose):
     # An int that keeps count of the number of sequences seen
     charCount = 0
     # An int that keeps count of the total number of characters seen
-    for fasta in fasta_fastq_parser.read_fasta(inputFile,alpha,verbose,True):
+    for fasta in fastFunctions.readFasta(inputFile,alpha,verbose,True):
         charCount += len(fasta.sequence) 
         sequenceCount += 1
         sequenceCost = 0

@@ -10,7 +10,7 @@ These functions are accessed in other python programs by
 prefixing this program's name, for example
 palindromeModule.reverse_comp(counts, True) is a valid 
 function call. 
-fasta_fastq_parser was writted by Robert Calef
+fastFunctions was writted by Robert Calef
 
 The following functions are contained in this module. 
 reverse_comp(dna)
@@ -38,7 +38,7 @@ count_kmers_and_totalChars(inputFile,  min_k, max_k,
 """
 import sys, operator, fileinput, string, os.path
 import re, argparse, itertools, gzip
-import collections, math, fasta_fastq_parser
+import collections, math, fastFunctions
 
 def reverse_comp(dna):
     """
@@ -409,7 +409,7 @@ def count_kmers_and_totalChars(inputFile,  min_k, max_k,
     kmerCounts = collections.Counter()
     if alpha is None:
         alpha = string.ascii_uppercase
-    for fasta in fasta_fastq_parser.read_fasta(inputFile,alpha,
+    for fasta in fastFunctions.readFasta(inputFile,alpha,
 			verbose,True):
         if len(fasta.sequence)== 0: continue
         totalCharCount += len(fasta.sequence)

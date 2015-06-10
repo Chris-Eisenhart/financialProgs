@@ -31,9 +31,29 @@ from __future__ import print_function
 import  sys, operator, fileinput, collections, string, os.path
 import  re, argparse
 
+# global variables
 alphabet="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'"
 # The accepted characters in a word. A word is defined as any
 # collection of characters from this alphabet. 
+
+# functions 
+def error(*objs):
+    """
+    Quit the program, if there is an error message spit it to stderr. 
+    """
+    print("ERROR: ", *objs, file=sys.stderr)
+    sys.exit()
+
+def checkVersion(): 
+    """
+    Check the python version and squak if there is a problem. 
+    """
+    if (sys.version.split()[0].replace(".","") < 270):
+        error("This system is running python %s, please try again with a version higher than 2.7"
+                %(sys.version.split()[0]))
+# Check version before arg parsing, the arg parse module requires python 2.7 or higher.
+checkVersion()
+
 def parseArgs(args): 
     """
     INPUT:
@@ -131,6 +151,7 @@ def readWord(inputFile):
 		if word is not None: yield word
 		word = None 
 	if word is not None: yield word
+
 
 def main(args):
     """

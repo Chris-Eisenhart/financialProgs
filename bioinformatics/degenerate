@@ -40,6 +40,27 @@ from __future__ import print_function
 import  sys, operator, fileinput, collections, string, os.path
 import  re, argparse, degenerateModule
 
+# functions 
+def warning(*objs):
+    print("WARNING: ", *objs, file=sys.stderr)
+
+def error(*objs):
+    """
+    Quit the program, if there is an error message spit it to stderr. 
+    """
+    print("ERROR: ", *objs, file=sys.stderr)
+    sys.exit()
+
+def checkVersion(): 
+    """
+    Check the python version and squak if there is a problem. 
+    """
+    if (sys.version.split()[0].replace(".","") < 270):
+        error("This system is running python %s, please try again with a version higher than 2.7"
+                %(sys.version.split()[0]))
+# Check version before arg parsing, the arg parse module requires python 2.7 or higher.
+checkVersion()
+
 def parseArgs(args): 
     """
     Set the specifications for user provided options. The following 

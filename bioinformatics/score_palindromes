@@ -27,14 +27,38 @@ Verbose will print warning if characters not in "ATCG" are
  found.     
  
 """
+from __future__ import print_function  
 import sys, operator, fileinput, collections
 import string, os.path, re, argparse, palindromeModule
 import gzip, math, time
+
+# globals 
 start_time = time.time()
 # This keeps track of the time the program started, 
 # time.time() signifies the current time. To determine
 # total run time start_time is subtracted from time.time()
 # then printed. 
+
+# functions 
+def warning(*objs):
+    print("WARNING: ", *objs, file=sys.stderr)
+
+def error(*objs):
+    """
+    Quit the program, if there is an error message spit it to stderr. 
+    """
+    print("ERROR: ", *objs, file=sys.stderr)
+    sys.exit()
+
+def checkVersion(): 
+    """
+    Check the python version and squak if there is a problem. 
+    """
+    if (sys.version.split()[0].replace(".","") < 270):
+        error("This system is running python %s, please try again with a version higher than 2.7"
+                %(sys.version.split()[0]))
+# Check version before arg parsing, the arg parse module requires python 2.7 or higher.
+checkVersion()
 
 def parseArgs(args): 
     """ 

@@ -24,14 +24,28 @@ characters.
 from __future__ import print_function  
 from itertools import izip
 import string, sys, operator, fileinput, collections, os.path
-import re, argparse, fastFunctions
+import re, argparse, fastFunctions, os
 
+# functions 
 def warning(*objs):
     print("WARNING: ", *objs, file=sys.stderr)
 
 def error(*objs):
+    """
+    Quit the program, if there is an error message spit it to stderr. 
+    """
     print("ERROR: ", *objs, file=sys.stderr)
     sys.exit()
+
+def checkVersion(): 
+    """
+    Check the python version and squak if there is a problem. 
+    """
+    if (sys.version.split()[0].replace(".","") < 270):
+        error("This system is running python %s, please try again with a version higher than 2.7"
+                %(sys.version.split()[0]))
+# Check version before arg parsing, the arg parse module requires python 2.7 or higher.
+checkVersion()
 
 def parseArgs(args): 
     """ 
@@ -129,6 +143,11 @@ def endTrim(fastq, minValue):
     fastq.quality = fastq.quality[0:count]
     return fastq
 
+def checkVersion(): 
+    """
+    Check the python version and squak if there is a problem. 
+    """
+    call = "python --version"
 
 def main(args):
     """
