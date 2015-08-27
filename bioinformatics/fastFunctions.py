@@ -47,7 +47,8 @@ class fq:
     # The DNA sequence stored internally as a string.
     quality = []
     # The quality sequence will be stored as a list of integers. 
-    
+    qualAvg = None
+    # Store the average quality of the fastq sequence
 
 def warning(*objs):
     """
@@ -70,6 +71,7 @@ def error(*objs):
     """
     print("ERROR: ", *objs, file=sys.stderr)
     sys.exit()
+
 
 def printFastqSeq(output, fastqSeq, phred):
     """
@@ -235,41 +237,26 @@ def readFastq(inputFile, alphabet, verbose, multiCases, phred):
     """
     fastq = fq()
     afterDel = False
+    totalScore = 0.0
     # This boolean keeps track of whether the fastq
     # is before or after the deliminator. 
-    completedSequence = False
     # This boolean keeps track of whether the quality 
     # sequence length equals the dna sequence length, 
     # which marks the end of the fastq read. 
     for line in inputFile:
-	# Handle the first fastq reads header
-	if fastq.header is None:
-            splitLine = re.search("[\s,]", line) 
-            fastq.header = line[1:splitLine.start(0)]
-            fastq.extraData = line[splitLine.start(0):-1]
-            continue
-
-	# Yields the completed sequence and handles the 
-	# fastq header.  
-	if (line.startswith("@") and len(fastq.sequence) == 
-		    len(fastq.quality) and completedSequence):
-            yield fastq
+        # Handle the header lines
+        if ((line.startswith("@") or line.startswith(">")) and not afterDel): 
+            totalScore = 0.0
 	    fastq.sequence = ""
-	    fastq.quality = [] 
-	    afterDel = False
-	    completedSeqeunce = False
+	    fastq.quality = []
             splitLine = re.search("[\s,]", line) 
             fastq.header = line[1:splitLine.start(0)]
             fastq.extraData = line[splitLine.start(0):-1]
             continue
 
-	#This block handles the dna sequence and the 
-	# deliminator. 
+	#This block handles the dna sequence and the  deliminator. 
         if not afterDel and fastq.header is not None:
-	    if line.startswith("+"):
-		# This breaks the DNA sequence growth
-		# and signals that the next lines
-		# will be quality sequence
+	    if line.startswith("+"): # Break when the + deliminator is seen 
 	        afterDel = True
 	        continue
 	    for char in line:
@@ -280,16 +267,17 @@ def readFastq(inputFile, alphabet, verbose, multiCases, phred):
 
 	# This block handles the quality sequence
 	if afterDel:
-	    for score in line[:-1]:
-		fastq.quality.append(ord(score) - phred)
-	    if len(fastq.sequence) == len(fastq.quality):
-		# When the quality sequence length is the 
-		# same as the DNA sequence length then 
-		# the fastq object is completed.  
-		completedSequence = True
-		afterDel = False
-
-    if fastq.header is not None: yield fastq
+            for score in line[:-1]:
+		totalScore += ord(score) - phred 
+                fastq.quality.append(ord(score) - phred)
+       
+        # When the quality sequence length is the  same as the DNA sequence length then 
+        # the fastq object is completed.   We yield the fastq class and reset some variable.
+        if (len(fastq.quality) == len(fastq.sequence)):
+            afterDel = False
+            fastq.qualAvg = float(totalScore)/float(len(fastq.sequence))
+            afterDel = False
+            yield fastq
 
 def readFastaWithQuality(fastaFile, qualFile, alphabet,
 			 verbose, multiCases):

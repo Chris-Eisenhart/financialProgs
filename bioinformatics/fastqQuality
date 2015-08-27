@@ -1,0 +1,90 @@
+#!/usr/bin/env python2.7
+# Chris Eisenhart 12.04.2014
+# ceisenhart@soe.ucsc.edu/ceisenha@ucsc.edu
+"""
+"""
+from __future__ import print_function  
+from itertools import izip
+import string, sys, operator, fileinput, collections, os.path
+import re, argparse, fastFunctions, os
+
+# functions 
+def warning(*objs):
+    print("WARNING: ", *objs, file=sys.stderr)
+
+def error(*objs):
+    """
+    Quit the program, if there is an error message spit it to stderr. 
+    """
+    print("ERROR: ", *objs, file=sys.stderr)
+    sys.exit()
+
+def checkVersion(): 
+    """
+    Check the python version and squak if there is a problem. 
+    """
+    if (sys.version.split()[0].replace(".","") < 270):
+        error("This system is running python %s, please try again with a version higher than 2.7"
+                %(sys.version.split()[0]))
+# Check version before arg parsing, the arg parse module requires python 2.7 or higher.
+checkVersion()
+
+def parseArgs(args): 
+    """ 
+    INPUT:
+	args- A copy of the command line. 
+    OUTPUT:
+	options - A tuple containing all of the user provided
+		command line information.
+    Takes in the command line and parsers any options the 
+    user provided. If no options are provided for alphabet, 
+    verbose, min_qual, or multiCases then a default value is 
+    provided. 
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    # Input Files
+    parser.add_argument ("fastq",
+	help = "Input fastq file.",
+	type =argparse.FileType('r') ) 
+    parser.add_argument ("--fastqTwo",
+	help = "Assumes the two fastq files are paired and trims them accordingly.",
+	type =argparse.FileType('r') ) 
+    # Output Files
+    parser.add_argument ("output",
+	help = "Output file one name.",
+	type = argparse.FileType('w') ) 
+    parser.add_argument ("--outputTwo",
+	help = "Output file two name.", 
+	type = argparse.FileType('w') ) 
+    parser.add_argument ("--qualCutoff", 
+        help = "The quality score cutoff",
+        type = int, 
+        action = "store")
+
+    parser.set_defaults(qualCutoff = 30)
+    options = parser.parse_args() 
+    return options
+
+
+
+def main(args):
+    """
+    Parses the command line options.
+    """
+    options = parseArgs(args)
+    
+    if options.fastqTwo is not None: 
+        for fastq, fastqTwo in izip(fastFunctions.readFastq(options.fastq, "ATCGN", False, True, 33),fastFunctions.readFastq(options.fastqTwo, "ATCGN", False, True, 33)):
+            if ((fastq.qualAvg or fastqTwo.qualAvg) < options.qualCutoff): continue
+            fastFunctions.printFastqSeq (options.output, fastq, 33)# Prints a fastq 
+            fastFunctions.printFastqSeq (options.outputTwo, fastqTwo, 33)# Prints a fastq 
+
+    else: 
+        for fastq in fastFunctions.readFastq(options.fastqOne, "ATCGN", False, True, 33):
+            if (fastq.qualAvg < options.qualCutoff): continue
+            fastFunctions.printFastqSeq (options.output, fastq, 33)# Prints a fastq 
+          
+
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))
