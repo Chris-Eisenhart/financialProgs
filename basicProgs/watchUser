@@ -1,0 +1,64 @@
+#!/usr/bin/env python2.7
+# watchUser
+# Chris Eisenhart 08/28/2015 
+# ceisenha@ucsc.edu/ceisenhart@soe.ucsc.edu
+"""
+Lets you 'watch' a user on the machine. Generates statistics for a designated period of time. 
+"""
+
+from __future__ import print_function  
+import  sys, operator, fileinput, collections, string, os.path
+import  re, argparse, subprocess, time
+
+def parseArgs(args): 
+    """
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("user",
+    help = " The users name on the machine. ",
+    action = "store")
+    parser.add_argument ("--time",
+    help = " The total time the program should run. ",
+    action = "store")
+    parser.add_argument ("--delay",
+    help = " The time between each peek. ",
+    action = "store")
+    parser.set_defaults(time = "10m") 
+    parser.set_defaults(delay = "60s") 
+    options = parser.parse_args()
+    return options
+
+
+def getTime(timeString):
+    """
+    """
+    if (timeString.endswith("s")):
+        return int(timeString[:-1])
+    if (timeString.endswith("m")):
+        return 60*int(timeString[:-1])
+    if (timeString.endswith("h")):
+        return 60*60*int(timeString[:-1])
+    if (timeString.endswith("d")):
+        return 24*60*60*int(timeString[:-1])
+    print ("Unrecognized time value, please use 60s for seconds, 60m for minutes, 60h for hours, and 60d for days")
+
+def main(args):
+    """
+    """
+    
+    options = parseArgs(args)
+    count = 0
+    for tick in range(getTime(options.time)):
+        os.system("top -U %s -b -n1 | head | tail -3 > .topPeek.txt"%(options.user))
+        
+        for line in open(".topPeek.txt", "r"):
+            splitLine = line.split()
+            print (splitLine)
+        time.sleep(getTime(options.delay))
+        count += getTime(options.delay)
+        if (count == getTime(options.time)):
+            break
+    os.system("rm .topPeek.txt"); 
+
+if __name__ == "__main__" :
+    sys.exit(main(sys.argv))
