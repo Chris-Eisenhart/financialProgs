@@ -10,7 +10,8 @@ import argparse
 import time
 import datetime
 
-# import the UCSC kent python library
+# import the UCSC kent python library.... That I hacked for my own personal use. 
+# I work at UCSC so it is my code to begin with. 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'pyLib'))
 import common
 import urllib, urllib2
@@ -39,28 +40,18 @@ def checkPrice():
     """
     hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'}
     bcURL = "http://www.coindesk.com/price/" 
-    #page = urllib.urlopen(bcURL)
     req = urllib2.Request(bcURL, headers=hdr)
-
     try:
         page = urllib2.urlopen(req)
     except urllib2.HTTPError, e:
         print e.fp.read()
-
-    #content = page.read()
-    #print (content)
-
     trigger = False
-    
     for line in page: 
-       # print (line)
         if trigger:
             return (line.strip().split(";")[1][:-5])
             trigger= False
         if "bpiCoinbase" in line: 
             trigger = True
-
-
 
 def main(args):
     """
@@ -70,11 +61,13 @@ def main(args):
     finLog = open("monitorBitcoin" + str(os.getpid()), "w")
     finLog.write("Logging bitcoin statistics")
     finLog.close()
-    
+    priceIndex = [] #Lets keep track of the numbers for a set period of time 
     while True: 
-        time.sleep(5)   
+        time.sleep(600)   
         os.system("echo %s >> monitorBitcoin%i"%(checkPrice(), os.getpid()))
         print (str(checkPrice()))
+        if len(priceIndex) > 6000: # At 10 minute cycles this is about 25 days to monitor at a time.  
+            priceIndex.pop(0) # Remove the oldest one
 
 if __name__ == "__main__" : 
     sys.exit(main(sys.argv))
