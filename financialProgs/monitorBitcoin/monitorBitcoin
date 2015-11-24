@@ -1,0 +1,80 @@
+#!/usr/bin/env python2.7
+# monitorBitcoin
+"""
+Keep an eye on bitcoin prices
+"""
+import os
+import sys
+import collections
+import argparse
+import time
+import datetime
+
+# import the UCSC kent python library
+sys.path.append(os.path.join(os.path.dirname(__file__), 'pyLib'))
+import common
+import urllib, urllib2
+
+
+
+def parseArgs(args):
+    """
+    Parse the command line arguments.
+    """
+    parser= argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("inputFile",
+    help = " The input file. ",
+    type = argparse.FileType("r"))
+    parser.add_argument ("outputFile",
+    help = " The output file. ",
+    type =argparse.FileType("w"))
+    if (len(sys.argv) == 1):
+        parser.print_help()
+        exit(1)
+    options = parser.parse_args()
+    return options
+
+def checkPrice(): 
+    """
+    """
+    hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'}
+    bcURL = "http://www.coindesk.com/price/" 
+    #page = urllib.urlopen(bcURL)
+    req = urllib2.Request(bcURL, headers=hdr)
+
+    try:
+        page = urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        print e.fp.read()
+
+    #content = page.read()
+    #print (content)
+
+    trigger = False
+    
+    for line in page: 
+       # print (line)
+        if trigger:
+            return (line.strip().split(";")[1][:-5])
+            trigger= False
+        if "bpiCoinbase" in line: 
+            trigger = True
+
+
+
+def main(args):
+    """
+    Initialized options and calls other functions.
+    """
+    options = parseArgs(args)
+    finLog = open("monitorBitcoin" + str(os.getpid()), "w")
+    finLog.write("Logging bitcoin statistics")
+    finLog.close()
+    
+    while True: 
+        time.sleep(5)   
+        os.system("echo %s >> monitorBitcoin%i"%(checkPrice(), os.getpid()))
+        print (str(checkPrice()))
+
+if __name__ == "__main__" : 
+    sys.exit(main(sys.argv))
