@@ -1,0 +1,87 @@
+#!/usr/bin/env python2.7
+# watchStock
+"""Watch a stock given a ticker symbol"""
+import os
+import sys
+import collections
+import argparse
+import re
+import json
+
+# import the UCSC kent python library
+sys.path.append(os.path.join(os.path.dirname(__file__), 'pyLib'))
+import common, urllib2
+
+def parseArgs(args):
+    """
+    Parse the command line arguments.
+    """
+    parser= argparse.ArgumentParser(description = __doc__)
+    parser.add_argument ("ticker",
+    help = " The stock market ticker, should be an exact match. IE COST, GBSN, etc. ",
+    action = "store")
+    if (len(sys.argv) == 1):
+        parser.print_help()
+        exit(1)
+    options = parser.parse_args()
+    return options
+
+def getInfo(ticker): 
+    """
+    Input:
+        ticker - A string that identifies a stock market symbol. Should be an exact match.  
+    """
+    hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'}
+    stockURL = "http://finance.yahoo.com/echarts?s="+ticker.upper()+"+Interactive#{\"range\":\"1d\",\"allowChartStacking\":true}" 
+    req = urllib2.Request(stockURL, headers=hdr)
+    try:
+        page = urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        print e.fp.read()
+    info = None
+    for line in page: 
+        if "{\"quoteDetails\":{\"quotes\":[" in line: 
+          info = line[:-1]
+    if info == None:
+        print ("The ticker was not found. Please make sure it is the exact spelling.")
+        exit(1)
+    
+    newInfo = info.split("applet_type")[1]
+    dataStart = newInfo[newInfo.find("quotes"):]
+    depth = 0
+    count = 8
+    for char in dataStart[8:]:
+        count += 1
+        if char == "[": depth +=1 
+        if char == "]": depth -=1 
+        if depth == 0: 
+            break
+    jsonData =  "{\""+dataStart[:count]+"}"
+    print (jsonData)
+    data = json.loads(jsonData)
+    print (data)
+    print (data["quotes"])
+    print (data["quotes"][0]["name"])
+
+def grabJson(line):
+    """
+    """
+    depth = 0 
+    
+
+
+#{"data":{"quoteDetails":{"quotes":[{"name":"Costco Wholesale Corporation","symbol":"COST","details_url":"http://finance.yahoo.com/q?s=COST","exchange":{"symbol":"NASDAQ","id":"NMS","status":"REGULAR_MARKET"},"type":"equity","price":{"fmt":"163.58","raw":"163.580002"},"volume":{"fmt":"846.3k","raw":"846265","longFmt":"846,265"},"avg_daily_volume":{"fmt":"2.0m","raw":"2030840","longFmt":"2,030,840"},"avg_3m_volume":{"fmt":"2.0m","raw":"2030840","longFmt":"2,030,840"},"timestamp":"1448647200","time":"1:00PM EST","trend":"up","price_change":{"fmt":"+1.19","raw":"1.190002"},"price_pct_change":{"fmt":"0.73%","raw":"0.732805"},"day_high":{"fmt":"164.41","raw":"164.410004"},"day_low":{"fmt":"162.49","raw":"162.490005"},"fiftytwo_week_high":{"fmt":"164.47","raw":"164.470000"},"fiftytwo_week_low":{"fmt":"117.03","raw":"117.030000"},"open":{"data_source":"1","fmt":"163.11","raw":"163.110001"},"pe_ratio":{"fmt":"30.46","raw":"30.461826"},"prev_close":{"data_source":"1","fmt":"162.39","raw":"162.389999"},"beta_coefficient":{"fmt":"0.79","raw":"0.788578"},"market_cap":{"data_source":"1","currency":"USD","fmt":"71.55B","raw":"71551037860.916138"},"eps":{"fmt":"5.37","raw":"5.370000"},"one_year_target":{"fmt":"163.48","raw":"163.480000"},"dividend_per_share":{"raw":"1.600000","fmt":"1.60"}}]},"symbol":"cost","login":"https://login.yahoo.com/config/login_verify2?.src=finance&.done=http%3A%2F%2Ffinance.yahoo.com%2Fecharts%3Fs%3Dcost","hamNavQueEnabled":false,"crumb":"4JnK4EJcvWM"}}
+#{"quotes":[{"name":"Costco Wholesale Corporation","symbol":"COST","details_url":"http://finance.yahoo.com/q?s=COST","exchange":{"symbol":"NASDAQ","id":"NMS","status":"REGULAR_MARKET"},"type":"equity","price":{"fmt":"163.58","raw":"163.580002"},"volume":{"fmt":"866.3k","raw":"866265","longFmt":"866,265"},"avg_daily_volume":{"fmt":"2.0m","raw":"2030840","longFmt":"2,030,840"},"avg_3m_volume":{"fmt":"2.0m","raw":"2030840","longFmt":"2,030,840"},"timestamp":"1448647200","time":"1:00PM EST","trend":"up","price_change":{"fmt":"+1.19","raw":"1.190002"},"price_pct_change":{"fmt":"0.73%","raw":"0.732805"},"day_high":{"fmt":"164.41","raw":"164.410004"},"day_low":{"fmt":"162.49","raw":"162.490005"},"fiftytwo_week_high":{"fmt":"164.47","raw":"164.470000"},"fiftytwo_week_low":{"fmt":"117.03","raw":"117.030000"},"open":{"data_source":"1","fmt":"163.11","raw":"163.110001"},"pe_ratio":{"fmt":"30.46","raw":"30.461826"},"prev_close":{"data_source":"1","fmt":"162.39","raw":"162.389999"},"beta_coefficient":{"fmt":"0.79","raw":"0.788578"},"market_cap":{"data_source":"1","currency":"USD","fmt":"71.55B","raw":"71551037860.916138"},"eps":{"fmt":"5.37","raw":"5.370000"},"one_year_target":{"fmt":"163.48","raw":"163.480000"},"dividend_per_share":{"raw":"1.600000","fmt":"1.60"}}]}
+
+
+
+
+def main(args):
+    """
+    Initialized options and calls other functions.
+    """
+    options = parseArgs(args)
+    getInfo(options.ticker)
+
+if __name__ == "__main__" : 
+    sys.exit(main(sys.argv))
